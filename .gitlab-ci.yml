@@ -1,7 +1,9 @@
 stages:
-  - build
+  - test
 
-build-job:
-  stage: build
+
+test-job:
+  stage: test
   script:
-    - echo "Hello World"
+    - gcloud --version
+    - tfswitch --version
