@@ -4,6 +4,7 @@ stages:
 
 test-job:
   stage: test
+  image: gcr.io/devops-workshop-2023/terraform-runner@sha256:c44ef0fd6d8cb6e46b6da061e1b11789c3954f90613d8d94a2d5e10e784af051
   script:
     - gcloud --version
     - tfswitch --version
