@@ -1,10 +1,36 @@
 stages:
-  - test
+  - plan
+  - apply
 
+before_script:
+  - echo $SERVICE_ACCOUNT_JSON | base64 -d > $CI_PROJECT_DIR/service-account.json
 
-test-job:
-  stage: test
-  image: gcr.io/devops-workshop-2023/terraform-runner@sha256:c44ef0fd6d8cb6e46b6da061e1b11789c3954f90613d8d94a2d5e10e784af051
+.plan_template:
+  stage: plan
+  image: gcr.io/devops-workshop-2023/terraform-runner:1.0.0
   script:
-    - gcloud --version
-    - tfswitch --version
+    - cd $TF_DIR
+    - tfswitch
+    - ./terraform init
+    - ./terraform validate
+    - ./terraform plan
+
+
+.apply_template:
+  stage: apply
+  image: gcr.io/devops-workshop-2023/terraform-runner:1.0.0
+  script:
+    - cd $TF_DIR
+    - tfswitch
+    - ls -la
+    - pwd
+    - ./terraform init
+    - ./terraform validate
+    - ./terraform apply
+
+include:
+  - local: 'google/devops-workshop-2023/gcs/.gitlab-ci.yml'
+  - local: 'google/devops-workshop-2023/gke/.gitlab-ci.yml'
+  - local: 'google/devops-workshop-2023/iam/.gitlab-ci.yml'
+  - local: 'google/devops-workshop-2023/loadbalancer/.gitlab-ci.yml'
+  - local: 'google/devops-workshop-2023/vpc/.gitlab-ci.yml'

@@ -1,7 +1,7 @@
 terraform {
   backend "gcs" {
     bucket  = "devops-workshop-2023-terraform-state"
-    prefix  = "gke"
+    prefix  = "gcs"
     credentials = "../../../service-account.json"
   }
 }
