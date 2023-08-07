@@ -1,92 +1,83 @@
-# Terraform
+# **Terraform Google Cloud Infrastructure Repository**
+
+
+<div align="center">
+  <img src="https://se.ewi.tudelft.nl/desosa2019/chapters/terraform/images/617845e3592d99b71c40470d33c1785090cc4afa.png" alt="Terraform Logo" width="500">
+</div>
 
 
 
-## Getting started
+## Purpose
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+The Terraform Google Cloud Infrastructure Repository is designed to create and manage infrastructure resources on Google Cloud Platform (GCP) using Terraform. This repository provides a modular approach to set up various components such as:
+- Google Cloud Storage (GCS),
+- Google Kubernetes Engine (GKE),
+- Identity and Access Management (IAM),
+- Load Balancer,
+- Virtual Private Cloud (VPC)
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+for the "DevOps Workshop 2023" project.
 
-## Add your files
+## Features
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+###### Infrastructure as Code:
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/devops-workshop-2023/terraform.git
-git branch -M main
-git push -uf origin main
-```
+Define your infrastructure using Terraform configuration files to achieve version-controlled, repeatable, and consistent deployments on GCP.
+Modularity: The repository is organized into different modules, allowing you to create specific resources independently.
 
-## Integrate with your tools
+###### GitLab CI/CD Integration:
 
-- [ ] [Set up project integrations](https://gitlab.com/devops-workshop-2023/terraform/-/settings/integrations)
+The included .gitlab-ci.yml files configure GitLab CI/CD pipelines for separate infrastructures under the "DevOps Workshop 2023" project.
 
-## Collaborate with your team
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+## User Flows
 
-## Test and Deploy
+To use this Terraform repository and create infrastructure on GCP, follow these steps:
 
-Use the built-in continuous integration in GitLab.
+###### User Flow 1: Setting up Service Account Key
+- Obtain a Service Account Key in JSON format from the GCP console.
+- Encode the Service Account Key as Base64.
+- Save the encoded Service Account Key as a CI/CD variable named `$SERVICE_ACCOUNT_JSON` .
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+###### User Flow 2: Terraform Plan Execution
+- Navigate to the root directory of this repository.
+- Add the Base64-encoded Service Account Key to the CI/CD pipeline configuration.
+- Push changes to the repository to trigger the CI/CD pipeline.
+- The CI/CD pipeline will run the plan stage using the gcr.io/devops-workshop-2023/terraform-runner:1.0.0 image.
+- The `plan` stage will perform the following tasks:
+  - Switch to the relevant directory using `$TF_DIR`.
+  - Set up Terraform version using `tfswitch` and the specified version from the `.tfswitch.toml` file.
+  - Initialize Terraform using `terraform init`.
+  - Validate Terraform configurations using `terraform validate`.
+  - Generate an execution plan using `terraform plan`.
 
-***
+###### User Flow 3: Terraform Apply Execution
+- Ensure that the Service Account Key is properly configured as a CI/CD variable.
+- Push changes to the repository to trigger the CI/CD pipeline.
+- The CI/CD pipeline will run the `apply` stage using the gcr.io/devops-workshop-2023/terraform-runner:1.0.0 image.
+- The `apply` stage will perform the following tasks:
+  - Switch to the relevant directory using `$TF_DIR`.
+  - Set up Terraform version using `tfswitch` and the specified version from the `.tfswitch.toml` file.
+  - Initialize Terraform using `terraform init`.
+  - Validate Terraform configurations using `terraform validate`.
+  - Apply the changes and create the infrastructure using `terraform apply -auto-approve`.
 
-# Editing this README
+###### User Flow 4: Exploring Separate Infrastructures
+The repository contains separate .gitlab-ci.yml files in the following paths, each configuring GitLab CI/CD pipelines for specific infrastructures under the "DevOps Workshop 2023" project:
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+- `google/devops-workshop-2023/gcs/.gitlab-ci.yml`: Google Cloud Storage infrastructure
+- `google/devops-workshop-2023/gke/.gitlab-ci.yml`: Google Kubernetes Engine infrastructure
+- `google/devops-workshop-2023/iam/.gitlab-ci.yml`: Identity and Access Management infrastructure
+- `google/devops-workshop-2023/loadbalancer/.gitlab-ci.yml`: Load Balancer infrastructure
+- `google/devops-workshop-2023/vpc/.gitlab-ci.yml`: Virtual Private Cloud infrastructure
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+Each .gitlab-ci.yml file follows a similar pattern, utilizing .plan_template and .apply_template for Terraform plan and apply stages, respectively. The CI/CD pipelines automatically trigger when changes are made in the respective infrastructure directories.
 
-## Name
-Choose a self-explaining name for your project.
+## Getting Started
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+###### To get started, follow these steps:
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+- Obtain the Service Account Key for your GCP project and encode it as Base64.
+- Set up Terraform versions for each infrastructure by creating .tfswitch.toml files in the respective directories.
+- Customize the Terraform configurations in each infrastructure folder to meet your project's requirements.
+- Commit and push your changes to the repository to trigger the CI/CD pipelines and create/update the infrastructures on GCP.
