@@ -22,8 +22,6 @@ before_script:
   script:
     - cd $TF_DIR
     - tfswitch
-    - ls -la
-    - pwd
     - ./terraform init
     - ./terraform validate
     - ./terraform apply -auto-approve
