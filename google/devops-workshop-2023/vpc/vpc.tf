@@ -11,4 +11,13 @@ module "vpc" {
             subnet_region         = var.vpc_region
         }
     ]
+
+    secondary_ranges = {
+        devops-workshop-2023-subnet = [
+            {
+                range_name    = var.secondary_range
+                ip_cidr_range = "10.0.1.0/24"
+            },
+        ]
+    }
 }
