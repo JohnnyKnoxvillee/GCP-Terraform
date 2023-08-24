@@ -43,7 +43,12 @@ variable "zone" {
     description = "Availability zone"
 }
 
-variable "secondary_range" {
+variable "secondary_range_pod" {
     type = string
-    description = "secondary range subnet"
+    description = "secondary range pods"
+}
+
+variable "secondary_range_svc" {
+    type = string
+    description = "secondary range services"
 }
