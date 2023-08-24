@@ -22,8 +22,8 @@ module "gke" {
   name                       = var.cluster_name
   region                     = var.vpc_region
   regional                   = false
-  ip_range_pods              = var.vpc_subnetwork
-  ip_range_services          = var.vpc_subnetwork
+  ip_range_pods              = var.secondary_range
+  ip_range_services          = var.secondary_range
   zones                      = ["us-central1-c"]
   network                    = var.vpc_network
   subnetwork                 = var.vpc_subnetwork
