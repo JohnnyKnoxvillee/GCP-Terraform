@@ -3,6 +3,7 @@ Plan-GKE_job:
   extends: .plan_template
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+      when: manual
       changes:
         - "google/devops-workshop-2023/gke/*.tf"
   variables:
