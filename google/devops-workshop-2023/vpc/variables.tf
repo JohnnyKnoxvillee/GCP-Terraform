@@ -42,3 +42,8 @@ variable "zone" {
     type = string
     description = "Availability zone"
 }
+
+variable "secondary_range" {
+    type = string
+    description = "secondary range subnet"
+}
