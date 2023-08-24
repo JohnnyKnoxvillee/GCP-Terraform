@@ -1,10 +1,3 @@
-resource "google_compute_network" "vpc_network" {
-  project                 = var.project_id
-  name                    = var.vpc_network
-  auto_create_subnetworks = false
-  mtu                     = 1460
-}
-
 module "vpc" {
     source  = "terraform-google-modules/network/google"
     version = "~> 7.2"
