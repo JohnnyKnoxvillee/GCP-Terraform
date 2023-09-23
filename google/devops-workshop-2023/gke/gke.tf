@@ -37,10 +37,10 @@ module "gke" {
   node_pools = [
     {
       name               = var.node_pool_name
-      node_locations     = "us-central1-c"
+      node_locations     = ["us-central1-c"]
       machine_type       = "e2-medium"
       autoscaling        = true
-      min_count          = null
+      min_count          = 1
       max_count          = 8
       disk_size_gb       = 25
       disk_type          = "pd-standard"
@@ -54,7 +54,9 @@ module "gke" {
   ]
 
   node_pools_oauth_scopes = {
-    all = []
+    all = [
+      "https://www.googleapis.com/auth/cloud-platform",
+    ]
 
     default-node-pool = [
       "https://www.googleapis.com/auth/cloud-platform",
