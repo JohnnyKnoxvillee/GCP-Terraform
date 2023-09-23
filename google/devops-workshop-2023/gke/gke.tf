@@ -39,7 +39,8 @@ module "gke" {
       name               = var.node_pool_name
       node_locations     = "us-central1-c"
       machine_type       = "e2-medium"
-      min_count          = 1
+      autoscaling        = true
+      min_count          = null
       max_count          = 8
       disk_size_gb       = 25
       disk_type          = "pd-standard"
