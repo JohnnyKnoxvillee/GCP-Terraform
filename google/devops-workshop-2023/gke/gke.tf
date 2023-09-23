@@ -37,7 +37,7 @@ module "gke" {
   node_pools = [
     {
       name               = var.node_pool_name
-      node_locations     = ["us-central1-c"]
+      node_locations     = "us-central1-c"
       machine_type       = "e2-medium"
       autoscaling        = true
       min_count          = 1
