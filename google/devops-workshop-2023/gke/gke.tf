@@ -17,24 +17,27 @@ current-context: devops-workshop-2023-context
 }
 
 module "gke" {
-  source                     = "terraform-google-modules/kubernetes-engine/google"
-  project_id                 = var.project_id
-  name                       = var.cluster_name
-  region                     = var.vpc_region
-  regional                   = false
-  ip_range_pods              = var.secondary_range_pod
-  ip_range_services          = var.secondary_range_svc
-  zones                      = ["us-central1-c"]
-  network                    = var.vpc_network
-  subnetwork                 = var.vpc_subnetwork
-  http_load_balancing        = false
-  horizontal_pod_autoscaling = true
-  network_policy             = false
+  source                               = "terraform-google-modules/kubernetes-engine/google"
+  project_id                           = var.project_id
+  name                                 = var.cluster_name
+  region                               = var.vpc_region
+  regional                             = false
+  ip_range_pods                        = var.secondary_range_pod
+  ip_range_services                    = var.secondary_range_svc
+  zones                                = ["us-central1-c"]
+  network                              = var.vpc_network
+  subnetwork                           = var.vpc_subnetwork
+  http_load_balancing                  = false
+  horizontal_pod_autoscaling           = true
+  network_policy                       = false
+  monitoring_enable_managed_prometheus = false
+  logging_service                      = "none"
+  monitoring_service                   = "none"
 
   node_pools = [
     {
       name               = var.node_pool_name
-      machine_type       = "e2-small"
+      machine_type       = "e2-medium"
       min_count          = 1
       max_count          = 8
       disk_size_gb       = 25
