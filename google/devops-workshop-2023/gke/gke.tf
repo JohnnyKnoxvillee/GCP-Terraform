@@ -37,12 +37,13 @@ module "gke" {
   node_pools = [
     {
       name               = var.node_pool_name
+      node_locations     = "us-central1-c"
       machine_type       = "e2-medium"
       min_count          = 1
       max_count          = 8
       disk_size_gb       = 25
       disk_type          = "pd-standard"
-      image_type         = "cos_containerd"
+      image_type         = "COS_CONTAINERD"
       auto_repair        = true
       auto_upgrade       = true
       service_account    = var.gke_service_account
