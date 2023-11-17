@@ -1,0 +1,22 @@
+Plan-loadbalancer_job:
+  stage: plan
+  extends: .plan_template
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+      when: manual
+      changes:
+        - "google/devops-workshop-2023/loadbalancer/*.tf"
+  variables:
+    TF_DIR: "./google/devops-workshop-2023/loadbalancer"
+
+Apply-loadbalancer_job:
+  stage: apply
+  extends: .apply_template
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+      when: manual
+      changes:
+        - "google/devops-workshop-2023/loadbalancer/*.tf"
+      allow_failure: false
+  variables:
+    TF_DIR: "./google/devops-workshop-2023/loadbalancer"
